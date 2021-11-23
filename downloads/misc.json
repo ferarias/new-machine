@@ -1,0 +1,27 @@
+{
+    "items": [
+        {
+            "file": "hey_windows_amd64",
+            "url": "https://hey-release.s3.us-east-2.amazonaws.com/hey_windows_amd64"
+        },
+        {
+            "file": "bombardier-windows-amd64.exe",
+            "repo": "codesenberg/bombardier"
+        },		{
+            "file": "wcol500e.exe",
+            "url": "https://www.hikarun.com/e/wcol500e.exe"
+        },
+        {
+            "file": "SysinternalsSuite.zip",
+            "url": "https://download.sysinternals.com/files/SysinternalsSuite.zip"
+        },
+        {
+            "file": "nuget.exe",
+            "url": "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe"
+        },
+        {
+            "file": "baretail.exe",
+            "url": "https://www.baremetalsoft.com/baretail/download.php?p=m"
+        }
+    ]
+}
