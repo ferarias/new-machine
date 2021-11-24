@@ -23,6 +23,7 @@ try {
     Write-Host "INFO: Running from $PSScriptRoot"
     New-Item -ItemType Directory -Force -Path $ToolsDir | Out-Null
     Write-Host "INFO: Tools Install directory is $ToolsDir"
+    Add-PathVariable $ToolsDir
 
     # Set the files that will be downloaded in each section
     # You can take a look at the "downloads" folder to see which downloads are configured
@@ -51,10 +52,10 @@ try {
 
     # Windows Features
     # List features: Get-WindowsOptionalFeature -Online
-    Enable-WindowsOptionalFeature -Online -FeatureName 'Containers' -All
-    Enable-WindowsOptionalFeature -Online -FeatureName 'Microsoft-Hyper-V' -All
-    Enable-WindowsOptionalFeature -Online -FeatureName 'VirtualMachinePlatform' -All
-    Enable-WindowsOptionalFeature -Online -FeatureName 'Microsoft-Windows-Subsystem-Linux' -All
+    # Enable-WindowsOptionalFeature -Online -FeatureName 'Containers' -All
+    # Enable-WindowsOptionalFeature -Online -FeatureName 'Microsoft-Hyper-V' -All
+    # Enable-WindowsOptionalFeature -Online -FeatureName 'VirtualMachinePlatform' -All
+    # Enable-WindowsOptionalFeature -Online -FeatureName 'Microsoft-Windows-Subsystem-Linux' -All
 
     # Terminal
     winget install --id 'Microsoft.WindowsTerminal' --interactive
@@ -89,7 +90,6 @@ try {
 
     # Media
     winget install --id 'XPDM1ZW6815MQM' # VLC
-    winget install --id 'plex.plexmediaplayer' --interactive --scope machine
     winget install --id '9P4CLT2RJ1RS' --interactive # MusicBee
     winget install --id 'MusicBrainz.Picard' --interactive # MusicBrainz Picard
 
@@ -104,8 +104,7 @@ try {
     winget install --id 'Microsoft.AzureDataStudio' --interactive --scope machine
     winget install --id 'Amazon.AWSCLI' --interactive --scope machine
 
-    # Tools
-    # winget install --id 'Docker.DockerDesktop' --interactive --scope machine
+    # Dev Tools
     winget install --id 'Telerik.Fiddler' --interactive
     winget install --id 'Datalust.Seq' --interactive --scope machine
     winget install --id '9WZDNCRDMDM3' --interactive # NuGet Package Explorer
@@ -122,12 +121,15 @@ try {
     winget install --id 'OpenJS.NodeJS' --interactive --scope machine
     winget install --id 'Microsoft.dotnet' --interactive
 
-    #Synology
+    # Synology
     winget install --id 'Synology.DriveClient' --interactive --scope machine
     winget install --id 'Synology.NoteStationClient' --interactive --scope machine
 
-    #Specific
+    # Misc
     winget install --id 'eMClient.eMClient' --interactive --scope machine
+
+    # winget install --id 'Docker.DockerDesktop' --interactive --scope machine
+
 
     Write-Host -ForegroundColor DarkYellow "FINISHED SETUP!"
 }

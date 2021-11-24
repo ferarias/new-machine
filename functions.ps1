@@ -116,6 +116,20 @@ Function Extract([string]$Path, [string]$Destination) {
     & $sevenZipApplication $sevenZipArguments | Out-Null
 }
 
+Function Add-PathVariable {
+    param (
+        [string]$addPath
+    )
+    if (Test-Path $addPath){
+        $regexAddPath = [regex]::Escape($addPath)
+        $arrPath = $env:Path -split ';' | Where-Object {$_ -notMatch 
+"^$regexAddPath\\?"}
+        $env:Path = ($arrPath + $addPath) -join ';'
+    } else {
+        Throw "'$addPath' is not a valid path."
+    }
+}
+
 Function Add-Shortcut {
     param (
         [String]$ShortcutLocation,
