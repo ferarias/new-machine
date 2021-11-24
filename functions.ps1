@@ -41,18 +41,19 @@ Function Get-RemoteFiles {
         $file = $_.file
         $url = $_.url
         $repo = $_.repo
-        if($Null -ne $repo) {
+        if ($Null -ne $repo) {
             # This is a GitHub repo. We need to find out the latest tag and then build the URI to that release file
             $releasesUri = "https://api.github.com/repos/$repo/releases"
             $releasesResponse = Invoke-WebRequest $releasesUri -UseBasicParsing | ConvertFrom-Json
-            if($Null -ne $releasesResponse) {
+            if ($Null -ne $releasesResponse) {
                 $tag = $releasesResponse[0].tag_name
-            } else {
+            }
+            else {
                 $tagsUri = "https://api.github.com/repos/$repo/tags"
                 $tagsResponse = Invoke-WebRequest $tagsUri -UseBasicParsing | ConvertFrom-Json
                 $tag = $tagsResponse[0].name
             }
-            if($Null -ne $url) {
+            if ($Null -ne $url) {
                 $url = $url -replace "{tag}", $tag
             }
             else {
@@ -98,7 +99,7 @@ Function Expand-PackedFile {
         }
     }
     finally {
-        if(Test-Path $tempFolder) {
+        if (Test-Path $tempFolder) {
             Remove-Item $tempFolder -Force -Recurse | Out-Null
         }
     }
@@ -120,12 +121,12 @@ Function Add-PathVariable {
     param (
         [string]$addPath
     )
-    if (Test-Path $addPath){
+    if (Test-Path $addPath) {
         $regexAddPath = [regex]::Escape($addPath)
-        $arrPath = $env:Path -split ';' | Where-Object {$_ -notMatch 
-"^$regexAddPath\\?"}
+        $arrPath = $env:Path -split ';' | Where-Object { $_ -notMatch "^$regexAddPath\\?" }
         $env:Path = ($arrPath + $addPath) -join ';'
-    } else {
+    }
+    else {
         Throw "'$addPath' is not a valid path."
     }
 }

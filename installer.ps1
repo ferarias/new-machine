@@ -130,7 +130,6 @@ try {
 
     # winget install --id 'Docker.DockerDesktop' --interactive --scope machine
 
-
     Write-Host -ForegroundColor DarkYellow "FINISHED SETUP!"
 }
 catch { 
