@@ -120,6 +120,8 @@ try {
     # Frameworks
     winget install --id 'OpenJS.NodeJS' --interactive --scope machine
     winget install --id 'Microsoft.dotnet' --interactive
+    winget install --id 'Microsoft.dotnet' --version 3.1.410.15736 # dotnet 3.1 SDK
+    winget install --id 'Microsoft.dotnet' --version 5.4.121.42430 # dotnet 5.4 SDK
 
     # Synology
     winget install --id 'Synology.DriveClient' --interactive --scope machine
