@@ -1,6 +1,10 @@
 {
     "items": [
         {
+            "repo": "openconnect/openconnect-gui",
+            "file": "openconnect-gui-1.5.3-win32.exe"
+        },
+        {
             "file": "hey_windows_amd64",
             "url": "https://hey-release.s3.us-east-2.amazonaws.com/hey_windows_amd64"
         },

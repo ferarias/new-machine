@@ -40,12 +40,13 @@ try {
     Write-Host -ForegroundColor DarkGreen "Downloading misc additional packages from: $($downloads.Misc)"
     Get-RemoteFiles $downloads.Misc $cacheFolder
 
+    Start-Process -FilePath "$cacheFolder/openconnect-gui-1.5.3-win32.exe" -ArgumentList "/S" # Uses Nullsoft installer
+    Start-Process "$cacheFolder/wcol500e.exe" -ArgumentList "-silent" # Uses CreateInstall 
     Expand-PackedFile "$cacheFolder/SysinternalsSuite.zip" ( [Path]::Combine($ToolsDir, "sysinternals") )
     Copy-Item -Force -Path "$cacheFolder/nuget.exe" -Destination $ToolsDir
     Copy-Item -Force -Path "$cacheFolder/baretail.exe" -Destination $ToolsDir
     Copy-Item -Force -Path "$cacheFolder/bombardier-windows-amd64.exe" -Destination "$ToolsDir/bombardier.exe"
     Copy-Item -Force -Path "$cacheFolder/hey_windows_amd64" -Destination "$ToolsDir/hey.exe"
-    Start-Process "$cacheFolder/wcol500e.exe"
 
     # Environment Variables
     [System.Environment]::SetEnvironmentVariable('DOTNET_CLI_TELEMETRY_OPTOUT', '1', [EnvironmentVariableTarget]::Machine)
@@ -74,7 +75,7 @@ try {
     winget install --id 'AgileBits.1Password' --interactive
     winget install --id 'PuTTY.PuTTY' --interactive --scope machine
     winget install --id 'ScooterSoftware.BeyondCompare4' --interactive
-
+    winget install --id 'DupeGuru.DupeGuru' --interactive
     # Communication
     winget install --id '9WZDNCRDK3WP' # Slack
     winget install --id '9WZDNCRFJ140' # Twitter
