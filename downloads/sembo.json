@@ -1,0 +1,12 @@
+{
+    "items": [
+        {
+            "file": "Meslo.zip",
+            "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Meslo.zip"
+        },
+        {
+            "repo": "openconnect/openconnect-gui",
+            "file": "openconnect-gui-1.5.3-win32.exe"
+        }
+    ]
+}

@@ -34,19 +34,11 @@ try {
     }
 
     # #############################################################################
-    # MISC ADDITIONAL SOFTWARE
+    # GET SOFTWARE
     # #############################################################################
-    Write-Host -ForegroundColor DarkYellow "INSTALLING ADDITIONAL MISC SOFTWARE"
-    Write-Host -ForegroundColor DarkGreen "Downloading misc additional packages from: $($downloads.Misc)"
+    Write-Host -ForegroundColor DarkYellow "INSTALLING SOFTWARE"
+    Write-Host -ForegroundColor DarkGreen "Downloading packages from: $($downloads.Misc)"
     Get-RemoteFiles $downloads.Misc $cacheFolder
-
-    Start-Process -FilePath "$cacheFolder/openconnect-gui-1.5.3-win32.exe" -ArgumentList "/S" # Uses Nullsoft installer
-    Start-Process "$cacheFolder/wcol500e.exe" -ArgumentList "-silent" # Uses CreateInstall 
-    Expand-PackedFile "$cacheFolder/SysinternalsSuite.zip" ( [Path]::Combine($ToolsDir, "sysinternals") )
-    Copy-Item -Force -Path "$cacheFolder/nuget.exe" -Destination $ToolsDir
-    Copy-Item -Force -Path "$cacheFolder/baretail.exe" -Destination $ToolsDir
-    Copy-Item -Force -Path "$cacheFolder/bombardier-windows-amd64.exe" -Destination "$ToolsDir/bombardier.exe"
-    Copy-Item -Force -Path "$cacheFolder/hey_windows_amd64" -Destination "$ToolsDir/hey.exe"
 
     # Environment Variables
     [System.Environment]::SetEnvironmentVariable('DOTNET_CLI_TELEMETRY_OPTOUT', '1', [EnvironmentVariableTarget]::Machine)
@@ -58,36 +50,37 @@ try {
     # Enable-WindowsOptionalFeature -Online -FeatureName 'VirtualMachinePlatform' -All
     # Enable-WindowsOptionalFeature -Online -FeatureName 'Microsoft-Windows-Subsystem-Linux' -All
 
-    # Terminal
-    winget install --id 'Microsoft.WindowsTerminal' --interactive
-    winget install --id 'Microsoft.Powershell' --interactive --scope machine
-    winget install --id 'JanDeDobbeleer.OhMyPosh' --interactive
-    winget install --id '9P9TQF7MRM4R' --interactive # Windows Subsystem for Linux Preview
-    winget install --id '9NBLGGH4MSV6' --interactive # Ubuntu
+    # Basics
+    winget install --id 'Microsoft.Powershell' --scope machine
+    winget install --id '9P9TQF7MRM4R' # Windows Subsystem for Linux Preview
+    winget install --id '9NBLGGH4MSV6' # Ubuntu
+    winget install --id 'Microsoft.WindowsTerminal'
+    winget install --id 'JanDeDobbeleer.OhMyPosh'
+    oh-my-posh --init --shell pwsh --config ~/jandedobbeleer.omp.json | Invoke-Expression
+    winget install --id 'ScooterSoftware.BeyondCompare4'
+    winget install --id '7zip.7zip' --scope machine
+    winget install --id 'RARLab.WinRAR' --scope machine
+    winget install --id 'Microsoft.VisualStudioCode' --interactive --scope machine
+    winget install --id 'AgileBits.1Password' --interactive
+
+    # Browsers
+    winget install --id 'BraveSoftware.BraveBrowser'
+    winget install --id 'Opera.Opera' --scope machine
 
     # Office
-    winget install --id '9MSPC6MP8FM4' --interactive # Microsoft Whiteboard
-    winget install --id 'calibre.calibre' --interactive # Calibre
 
     # Utilities
-    winget install --id '7zip.7zip' --interactive --scope machine
-    winget install --id 'WinSCP.WinSCP' --interactive --scope machine
-    winget install --id 'AgileBits.1Password' --interactive
-    winget install --id 'PuTTY.PuTTY' --interactive --scope machine
-    winget install --id 'ScooterSoftware.BeyondCompare4' --interactive
     winget install --id 'DupeGuru.DupeGuru' --interactive
+    winget install --id '9MSPC6MP8FM4' --interactive # Microsoft Whiteboard
+    winget install --id 'calibre.calibre' --interactive # Calibre
+    winget install --id 'Learnpulse.Screenpresso' --interactive --scope machine
+
     # Communication
-    winget install --id '9WZDNCRDK3WP' # Slack
     winget install --id '9WZDNCRFJ140' # Twitter
     winget install --id 'XP99J3KP4XZ4VV' # Zoom
     winget install --id '9N97ZCKPD60Q' # Unigram
-
-    # Browsers
-    winget install --id 'BraveSoftware.BraveBrowser' --interactive
-    winget install --id 'Opera.Opera' --interactive --scope machine
-
-    # Images
-    winget install --id 'Learnpulse.Screenpresso' --interactive --scope machine
+    winget install --id 'PuTTY.PuTTY' --interactive --scope machine
+    winget install --id 'WinSCP.WinSCP' --interactive --scope machine
 
     # Media
     winget install --id 'XPDM1ZW6815MQM' # VLC
@@ -96,9 +89,9 @@ try {
 
     # Git
     winget install --id 'Git.Git' --interactive --scope machine
-    winget install --id 'GitHub.GitLFS' --interactive --scope machine
-    winget install --id 'GitHub.cli' --interactive --scope machine
-    winget install --id 'Axosoft.GitKraken' --interactive
+    winget install --id 'GitHub.GitLFS' --scope machine
+    winget install --id 'GitHub.cli' --scope machine
+    winget install --id 'Axosoft.GitKraken'
 
     # Azure/AWS
     winget install --id 'Microsoft.AzureCLI' --interactive
@@ -106,30 +99,35 @@ try {
     winget install --id 'Amazon.AWSCLI' --interactive --scope machine
 
     # Dev Tools
-    winget install --id 'Telerik.Fiddler' --interactive
+    winget install --id 'Telerik.Fiddler'
     winget install --id 'Datalust.Seq' --interactive --scope machine
-    winget install --id '9WZDNCRDMDM3' --interactive # NuGet Package Explorer
-    winget install --id '9MXFBKFVSQ13' --interactive # ILSpy
+    winget install --id '9WZDNCRDMDM3' # NuGet Package Explorer
+    winget install --id '9MXFBKFVSQ13' # ILSpy
 
     # IDE's
     winget install --id 'Microsoft.VisualStudio.2022.Professional' --interactive
-    winget install --id 'Microsoft.VisualStudioCode' --interactive --scope machine
     winget install --id 'Postman.Postman' --interactive
     winget install --id 'HeidiSQL.HeidiSQL' --interactive --scope machine
     winget install --id '3T.Robo3T' --interactive --scope machine
 
     # Frameworks
-    winget install --id 'OpenJS.NodeJS' --interactive --scope machine
     winget install --id 'Microsoft.dotnet' --interactive
-    winget install --id 'Microsoft.dotnet' --version 3.1.410.15736 # dotnet 3.1 SDK
-    winget install --id 'Microsoft.dotnet' --version 5.4.121.42430 # dotnet 5.4 SDK
-
+ 
     # Synology
     winget install --id 'Synology.DriveClient' --interactive --scope machine
     winget install --id 'Synology.NoteStationClient' --interactive --scope machine
 
     # Misc
     winget install --id 'eMClient.eMClient' --interactive --scope machine
+    winget install --id 'Corsair.iCUE.4' --interactive --scope machine
+
+    # Additional software
+    Start-Process "$cacheFolder/wcol500e.exe" -ArgumentList "-silent" # Uses CreateInstall 
+    Expand-PackedFile "$cacheFolder/SysinternalsSuite.zip" ( [Path]::Combine($ToolsDir, "sysinternals") )
+    Copy-Item -Force -Path "$cacheFolder/nuget.exe" -Destination $ToolsDir
+    Copy-Item -Force -Path "$cacheFolder/baretail.exe" -Destination $ToolsDir
+    Copy-Item -Force -Path "$cacheFolder/bombardier-windows-amd64.exe" -Destination "$ToolsDir/bombardier.exe"
+    Copy-Item -Force -Path "$cacheFolder/hey_windows_amd64" -Destination "$ToolsDir/hey.exe"
 
     # winget install --id 'Docker.DockerDesktop' --interactive --scope machine
 
