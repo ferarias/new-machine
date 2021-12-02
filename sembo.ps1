@@ -1,4 +1,5 @@
-#Require -Version 5.0
+#Requires -Version 5.0
+
 using namespace System.IO
 
 [CmdletBinding()]
@@ -39,13 +40,6 @@ try {
     Write-Host -ForegroundColor DarkYellow "INSTALLING SOFTWARE"
     Write-Host -ForegroundColor DarkGreen "Downloading packages from: $($downloads.Sembo)"
     Get-RemoteFiles $downloads.Sembo $cacheFolder
-
-    # Install fonts requires admin
-    $fontFolder = [Path]::Combine($cacheFolder, "fonts/meslo")
-    Expand-PackedFile "$cacheFolder/Meslo.zip" $fontFolder
-    foreach ($FontItem in (Get-ChildItem -Path $fontFolder | Where-Object {($_.Name -like '*.ttf') -or ($_.Name -like '*.OTF')})) {
-        Install-Font -FontFile $FontItem
-    } 
 
     # Install frameworks
     winget install --id 'OpenJS.NodeJS.LTS' --version 14.17.4 --scope machine
