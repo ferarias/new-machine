@@ -1,4 +1,6 @@
-#Require -Version 5.0
+#Requires -Version 5.0
+#Requires -RunAsAdministrator
+
 using namespace System.IO
 
 [CmdletBinding()]
@@ -30,15 +32,19 @@ try {
     $downloadsFolder = [Path]::Combine("$PSScriptRoot", "downloads")
     Write-Host "INFO: Downloads directory is: $downloadsFolder."
     $downloads = @{ 
+        Fonts   = [Path]::Combine($downloadsFolder, "fonts.json") ;
         Misc    = [Path]::Combine($downloadsFolder, "misc.json") ;
     }
+
+    Write-Host -ForegroundColor DarkGreen "Downloading packages from: $($downloads.Misc)"
+    Get-RemoteFiles $downloads.Misc $cacheFolder
+    Write-Host -ForegroundColor DarkGreen "Downloading fonts from: $($downloads.Fonts)"
+    Get-RemoteFiles $downloads.Fonts $cacheFolder
 
     # #############################################################################
     # GET SOFTWARE
     # #############################################################################
     Write-Host -ForegroundColor DarkYellow "INSTALLING SOFTWARE"
-    Write-Host -ForegroundColor DarkGreen "Downloading packages from: $($downloads.Misc)"
-    Get-RemoteFiles $downloads.Misc $cacheFolder
 
     # Environment Variables
     [System.Environment]::SetEnvironmentVariable('DOTNET_CLI_TELEMETRY_OPTOUT', '1', [EnvironmentVariableTarget]::Machine)
@@ -128,6 +134,14 @@ try {
     Copy-Item -Force -Path "$cacheFolder/baretail.exe" -Destination $ToolsDir
     Copy-Item -Force -Path "$cacheFolder/bombardier-windows-amd64.exe" -Destination "$ToolsDir/bombardier.exe"
     Copy-Item -Force -Path "$cacheFolder/hey_windows_amd64" -Destination "$ToolsDir/hey.exe"
+
+
+    # Install fonts requires admin
+    $fontFolder = [Path]::Combine($cacheFolder, "fonts/meslo")
+    Expand-PackedFile "$cacheFolder/Meslo.zip" $fontFolder
+    foreach ($FontItem in (Get-ChildItem -Path $fontFolder | Where-Object {($_.Name -like '*.ttf') -or ($_.Name -like '*.OTF')})) {
+        Install-Font -FontFile $FontItem
+    }     
 
     # winget install --id 'Docker.DockerDesktop' --interactive --scope machine
 
