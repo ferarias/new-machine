@@ -128,6 +128,7 @@ try {
     Copy-Item -Force -Path "$cacheFolder/baretail.exe" -Destination $ToolsDir
     Copy-Item -Force -Path "$cacheFolder/bombardier-windows-amd64.exe" -Destination "$ToolsDir/bombardier.exe"
     Copy-Item -Force -Path "$cacheFolder/hey_windows_amd64" -Destination "$ToolsDir/hey.exe"
+    Copy-Item -Force -Path "$cacheFolder/jq-win64.exe" -Destination "$ToolsDir/jq.exe"
 
     # winget install --id 'Docker.DockerDesktop' --interactive --scope machine
 
