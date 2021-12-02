@@ -10,7 +10,7 @@
         },
         {
             "repo": "stedolan/jq",
-            "file": "https://github.com/stedolan/jq/releases/download/jq-1.6/jq-win64.exe"
+            "file": "jq-win64.exe"
         },
         {
             "file": "wcol500e.exe",
