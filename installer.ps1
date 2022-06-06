@@ -1,5 +1,5 @@
 #Requires -Version 5.0
-#Requires -RunAsAdministrator
+# #Requires -RunAsAdministrator
 
 using namespace System.IO
 
@@ -16,6 +16,9 @@ Write-Host -ForegroundColor Magenta "***************************************"
 Write-Host -ForegroundColor White   "SETUP FOR FERARIAS COMPUTER ENVIRONMENT"
 Write-Host -ForegroundColor Magenta "***************************************"
 
+# Environment Variables
+[System.Environment]::SetEnvironmentVariable('DOTNET_CLI_TELEMETRY_OPTOUT', '1', [EnvironmentVariableTarget]::Machine)
+
 try {
     # #############################################################################
     # SETUP BASIC STUFF
@@ -29,11 +32,11 @@ try {
 
     # Set the files that will be downloaded in each section
     # You can take a look at the "downloads" folder to see which downloads are configured
-    $downloadsFolder = [Path]::Combine("$PSScriptRoot", "downloads")
+    $downloadsFolder = Join-Path $PSScriptRoot "downloads"
     Write-Host "INFO: Downloads directory is: $downloadsFolder."
     $downloads = @{ 
-        Fonts   = [Path]::Combine($downloadsFolder, "fonts.json") ;
-        Misc    = [Path]::Combine($downloadsFolder, "misc.json") ;
+        Fonts   = Join-Path $downloadsFolder "fonts.json"
+        Misc    = Join-Path $downloadsFolder "misc.json"
     }
 
     Write-Host -ForegroundColor DarkGreen "Downloading packages from: $($downloads.Misc)"
@@ -46,9 +49,6 @@ try {
     # #############################################################################
     Write-Host -ForegroundColor DarkYellow "INSTALLING SOFTWARE"
 
-    # Environment Variables
-    [System.Environment]::SetEnvironmentVariable('DOTNET_CLI_TELEMETRY_OPTOUT', '1', [EnvironmentVariableTarget]::Machine)
-
     # Windows Features
     # List features: Get-WindowsOptionalFeature -Online
     # Enable-WindowsOptionalFeature -Online -FeatureName 'Containers' -All
@@ -56,26 +56,12 @@ try {
     # Enable-WindowsOptionalFeature -Online -FeatureName 'VirtualMachinePlatform' -All
     # Enable-WindowsOptionalFeature -Online -FeatureName 'Microsoft-Windows-Subsystem-Linux' -All
 
-    # Basics
-    winget install --id 'Microsoft.Powershell' --scope machine
-    winget install --id '9P9TQF7MRM4R' # Windows Subsystem for Linux Preview
-    winget install --id '9NBLGGH4MSV6' # Ubuntu
-    winget install --id 'Microsoft.WindowsTerminal'
-    winget install --id 'JanDeDobbeleer.OhMyPosh'
-    oh-my-posh --init --shell pwsh --config ~/jandedobbeleer.omp.json | Invoke-Expression
-    winget install --id 'ScooterSoftware.BeyondCompare4'
-    winget install --id '7zip.7zip' --scope machine
-    winget install --id 'RARLab.WinRAR' --scope machine
-    winget install --id 'Microsoft.VisualStudioCode' --interactive --scope machine
-    winget install --id 'AgileBits.1Password' --interactive
-
-    # Browsers
-    winget install --id 'BraveSoftware.BraveBrowser'
-    winget install --id 'Opera.Opera' --scope machine
+    $packagesFolder = Join-Path $PSScriptRoot "packages"
+    foreach ($item in Get-ChildItem -Path $packagesFolder -Filter "*.json" ) {
+         Install-Packages -JsonFile $item
+    }
 
     # Office
-
-    # Utilities
     winget install --id 'DupeGuru.DupeGuru' --interactive
     winget install --id '9MSPC6MP8FM4' --interactive # Microsoft Whiteboard
     winget install --id 'calibre.calibre' --interactive # Calibre
@@ -97,11 +83,10 @@ try {
     winget install --id 'Git.Git' --interactive --scope machine
     winget install --id 'GitHub.GitLFS' --scope machine
     winget install --id 'GitHub.cli' --scope machine
-    winget install --id 'Axosoft.GitKraken'
 
     # Azure/AWS
-    winget install --id 'Microsoft.AzureCLI' --interactive
     winget install --id 'Microsoft.AzureDataStudio' --interactive --scope machine
+    winget install --id 'Microsoft.AzureCLI' --interactive
     winget install --id 'Amazon.AWSCLI' --interactive --scope machine
 
     # Dev Tools
@@ -124,12 +109,14 @@ try {
     winget install --id 'Synology.NoteStationClient' --interactive --scope machine
 
     # Misc
-    winget install --id 'eMClient.eMClient' --interactive --scope machine
     winget install --id 'Corsair.iCUE.4' --interactive --scope machine
 
     # Additional software
     Start-Process "$cacheFolder/wcol500e.exe" -ArgumentList "-silent" # Uses CreateInstall 
-    Expand-PackedFile "$cacheFolder/SysinternalsSuite.zip" ( [Path]::Combine($ToolsDir, "sysinternals") )
+    $sysInternalsPath =Join-Path $ToolsDir "sysinternals"
+    Expand-PackedFile "$cacheFolder/SysinternalsSuite.zip" $sysInternalsPath
+    Add-PathVariable $sysInternalsPath
+
     Copy-Item -Force -Path "$cacheFolder/nuget.exe" -Destination $ToolsDir
     Copy-Item -Force -Path "$cacheFolder/baretail.exe" -Destination $ToolsDir
     Copy-Item -Force -Path "$cacheFolder/bombardier-windows-amd64.exe" -Destination "$ToolsDir/bombardier.exe"
@@ -138,13 +125,22 @@ try {
 
 
     # Install fonts requires admin
-    $fontFolder = [Path]::Combine($cacheFolder, "fonts/meslo")
+    $fontFolder = Join-Path $cacheFolder "fonts/meslo"
     Expand-PackedFile "$cacheFolder/Meslo.zip" $fontFolder
     foreach ($FontItem in (Get-ChildItem -Path $fontFolder | Where-Object {($_.Name -like '*.ttf') -or ($_.Name -like '*.OTF')})) {
         Install-Font -FontFile $FontItem
     }     
+    $fontFolder = Join-Path $cacheFolder "fonts/firacode"
+    Expand-PackedFile "$cacheFolder/Fira_Code_v6.2.zip" $fontFolder
+    foreach ($FontItem in (Get-ChildItem -Path $fontFolder | Where-Object {($_.Name -like '*.ttf')})) {
+        Install-Font -FontFile $FontItem
+    }     
 
     # winget install --id 'Docker.DockerDesktop' --interactive --scope machine
+
+    winget install --id 'JanDeDobbeleer.OhMyPosh'
+    oh-my-posh --init --shell pwsh --config ~/jandedobbeleer.omp.json | Invoke-Expression
+
 
     Write-Host -ForegroundColor DarkYellow "FINISHED SETUP!"
 }

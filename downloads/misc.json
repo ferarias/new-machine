@@ -27,6 +27,10 @@
         {
             "file": "baretail.exe",
             "url": "https://www.baremetalsoft.com/baretail/download.php?p=m"
+        },
+        {
+            "repo": "derailed/k9s",
+            "file": "k9s_Windows_x86_64.tar.gz"
         }
     ]
 }

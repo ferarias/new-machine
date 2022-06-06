@@ -1,0 +1,7 @@
+{
+    "Title": "Browsers",
+    "Packages": [
+        { "id": "BraveSoftware.BraveBrowser", "name": "Brave Browser" },
+        { "id": "Opera.Opera", "name": "Opera", "scope": "Machine" }
+    ]
+}

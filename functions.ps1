@@ -30,6 +30,37 @@ if (!(Get-MyModule -name "7Zip4Powershell")) {
 Invoke-WebRequest "https://www.7-zip.org/a/7z1900.exe" -Out "$cacheFolder\7z1900.exe"
 Expand-7Zip -ArchiveFileName "$cacheFolder\7z1900.exe" -TargetPath "$cacheFolder\7z\"
 
+Function Install-Packages {
+    param (
+        [parameter(Mandatory = $true)][string]$JsonFile
+    )
+
+    $data = Get-Content $jsonFile | ConvertFrom-Json
+
+    $title = $data.Title
+
+    Write-Host -ForegroundColor Green " Installing $title..."
+
+    $data | Select-Object -ExpandProperty Packages | ForEach-Object {
+
+        $command = "winget list --id $($_.id)"
+        Invoke-Expression $command
+        if(0 -ne $LASTEXITCODE) {
+            $command = "winget install --id $($_.id)"
+            if($null -ne $_.scope)
+            {
+                $command = "$($command) --scope $($_.scope)"
+            }
+            if($null -ne $_.interactive)
+            {
+                $command = "$($command) --interactive"
+            }
+            Invoke-Expression $command
+        }
+
+    }
+}
+
 Function Get-RemoteFiles {
     param (
         [parameter(Mandatory = $true)][string]$jsonFile,

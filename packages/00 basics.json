@@ -1,0 +1,17 @@
+{
+    "Title": "Basics",
+    "Packages": [
+        {
+            "id": "Microsoft.Powershell",
+            "scope": "Machine"
+        },
+        {
+            "id": "Microsoft.WindowsTerminal"
+        },
+        {"id": "ScooterSoftware.BeyondCompare4"},
+        {"id": "7zip.7zip"},
+        {"id": "RARLab.WinRAR"},
+        {"id": "Microsoft.VisualStudioCode"},
+        {"id": "AgileBits.1Password", "interactive": true}
+    ]
+}
