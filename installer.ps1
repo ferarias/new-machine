@@ -51,28 +51,16 @@ try {
 
     # Windows Features
     # List features: Get-WindowsOptionalFeature -Online
-    # Enable-WindowsOptionalFeature -Online -FeatureName 'Containers' -All
-    # Enable-WindowsOptionalFeature -Online -FeatureName 'Microsoft-Hyper-V' -All
-    # Enable-WindowsOptionalFeature -Online -FeatureName 'VirtualMachinePlatform' -All
-    # Enable-WindowsOptionalFeature -Online -FeatureName 'Microsoft-Windows-Subsystem-Linux' -All
+    Enable-WindowsOptionalFeature -Online -FeatureName 'Containers' -All
+    Enable-WindowsOptionalFeature -Online -FeatureName 'Microsoft-Hyper-V' -All
+    Enable-WindowsOptionalFeature -Online -FeatureName 'VirtualMachinePlatform' -All
+    Enable-WindowsOptionalFeature -Online -FeatureName 'Microsoft-Windows-Subsystem-Linux' -All
 
+    # Winget packages
     $packagesFolder = Join-Path $PSScriptRoot "packages"
     foreach ($item in Get-ChildItem -Path $packagesFolder -Filter "*.json" ) {
          Install-Packages -JsonFile $item
     }
-
-    # Office
-    winget install --id 'DupeGuru.DupeGuru' --interactive
-    winget install --id '9MSPC6MP8FM4' --interactive # Microsoft Whiteboard
-    winget install --id 'calibre.calibre' --interactive # Calibre
-    winget install --id 'Learnpulse.Screenpresso' --interactive --scope machine
-
-    # Communication
-    winget install --id '9WZDNCRFJ140' # Twitter
-    winget install --id 'XP99J3KP4XZ4VV' # Zoom
-    winget install --id '9N97ZCKPD60Q' # Unigram
-    winget install --id 'PuTTY.PuTTY' --interactive --scope machine
-    winget install --id 'WinSCP.WinSCP' --interactive --scope machine
 
     # Media
     winget install --id 'XPDM1ZW6815MQM' # VLC

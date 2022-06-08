@@ -1,0 +1,9 @@
+{
+    "Title": "Office",
+    "Packages": [
+        { "id": "DupeGuru.DupeGuru", "name": "Brave Browser", "interactive": true },
+        { "id": "9MSPC6MP8FM4", "name": "Microsoft Whiteboard", "interactive": true },
+        { "id": "calibre.calibre", "name": "Calibre", "interactive": true },
+        { "id": "Learnpulse.Screenpresso", "name": "Screenpresso", "interactive": true, "scope": "Machine" }
+    ]
+}
