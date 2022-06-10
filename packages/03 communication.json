@@ -6,6 +6,6 @@
         { "id": "9N97ZCKPD60Q", "name": "Unigram" },
         { "id": "PuTTY.PuTTY", "name": "PuTTY", "interactive": true, "scope": "Machine" },
         { "id": "WinSCP.WinSCP", "name": "WinSCP", "scope": "Machine" },
-        { "id": "OpenConnect-GUI", "name": "OpenConnect GUI" }
+        { "id": "OpenConnect-GUI", "name": "OpenConnect GUI", "interactive": true, "scope": "Machine" }
     ]
 }
