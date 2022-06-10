@@ -1,0 +1,8 @@
+{
+    "Title": "Cloud Development",
+    "Packages": [
+        { "id": "Postman.Postman", "name": "Postman", "interactive": true },
+        { "id": "Microsoft.AzureCLI", "name": "Microsoft Azure CLI", "scope": "Machine", "interactive": true },
+        { "id": "Amazon.AWSCLI", "name": "Amazon AWS CLI", "scope": "Machine", "interactive": true }
+    ]
+}

@@ -1,0 +1,8 @@
+{
+    "Title": "Database Development",
+    "Packages": [
+        { "id": "Microsoft.AzureDataStudio", "name": "Microsoft Azure Data Studio", "interactive": true, "scope": "Machine" },
+        { "id": "HeidiSQL.HeidiSQL", "name": "HeidiSQL", "scope": "Machine", "interactive": true },
+        { "id": "3T.Robo3T", "name": "3T.Robo3T", "scope": "Machine", "interactive": true }
+    ]
+}

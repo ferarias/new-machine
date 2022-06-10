@@ -1,0 +1,7 @@
+{
+    "Title": "",
+    "Packages": [
+        { "id": "JanDeDobbeleer.OhMyPosh", "name": "Oh My Posh!", "interactive": true },
+        { "id": "Corsair.iCUE.4", "name": "iCue" }
+    ]
+}

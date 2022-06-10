@@ -27,10 +27,10 @@ if (!(Get-MyModule -name "7Zip4Powershell")) {
     Write-Host -ForegroundColor Cyan "Installing required 7zip module in Powershell"
     Install-Module -Name "7Zip4Powershell" -Scope CurrentUser -Force 
 }
-Invoke-WebRequest "https://www.7-zip.org/a/7z1900.exe" -Out "$cacheFolder\7z1900.exe"
-Expand-7Zip -ArchiveFileName "$cacheFolder\7z1900.exe" -TargetPath "$cacheFolder\7z\"
+Invoke-WebRequest "https://www.7-zip.org/a/7z2107-x64.exe" -Out "$cacheFolder\7z2107-x64.exe"
+Expand-7Zip -ArchiveFileName "$cacheFolder\7z2107-x64.exe" -TargetPath "$cacheFolder\7z\"
 
-Function Install-Packages {
+Function Install-WinGetPackages {
     param (
         [parameter(Mandatory = $true)][string]$JsonFile
     )
@@ -45,14 +45,12 @@ Function Install-Packages {
 
         $command = "winget list --id $($_.id)"
         Invoke-Expression $command
-        if(0 -ne $LASTEXITCODE) {
+        if (0 -ne $LASTEXITCODE) {
             $command = "winget install --id $($_.id)"
-            if($null -ne $_.scope)
-            {
+            if ($null -ne $_.scope) {
                 $command = "$($command) --scope $($_.scope)"
             }
-            if($null -ne $_.interactive)
-            {
+            if ($null -ne $_.interactive) {
                 $command = "$($command) --interactive"
             }
             Invoke-Expression $command
@@ -64,7 +62,8 @@ Function Install-Packages {
 Function Get-RemoteFiles {
     param (
         [parameter(Mandatory = $true)][string]$jsonFile,
-        [parameter(Mandatory = $true)][string]$targetDir
+        [parameter(Mandatory = $true)][string]$targetDir,
+        [parameter(Mandatory = $true)][string]$toolsDir
     )
     
     Get-Content $jsonFile | ConvertFrom-Json | Select-Object -ExpandProperty items | ForEach-Object {
@@ -72,6 +71,9 @@ Function Get-RemoteFiles {
         $file = $_.file
         $url = $_.url
         $repo = $_.repo
+        $type = $_.type
+        $executable = $_.executable
+
         if ($Null -ne $repo) {
             # This is a GitHub repo. We need to find out the latest tag and then build the URI to that release file
             $releasesUri = "https://api.github.com/repos/$repo/releases"
@@ -99,6 +101,32 @@ Function Get-RemoteFiles {
         }
         else {
             Write-Host -ForegroundColor Gray " Already downloaded $file... skipped."
+        }
+
+        switch ($type) {
+            "zip" {
+                Write-Host -ForegroundColor Green " Extracting $file..."
+                $sysInternalsPath = Join-Path $toolsDir "sysinternals"
+                New-Item -ItemType Directory -Force -Path $sysInternalsPath | Out-Null
+                Expand-PackedFile "$cacheFolder/SysinternalsSuite.zip" $sysInternalsPath
+                Add-PathVariable $sysInternalsPath
+            }
+            "exe" { 
+                Write-Host -ForegroundColor Green " Installing $file as $executable..."
+                Copy-Item -Force -Path (Join-Path $cacheFolder $file) -Destination (Join-Path $toolsDir $executable)
+            }
+            "font" {
+                $fontFile = Get-Item -Path (Join-Path $cacheFolder $file)
+                $fontFolder = Join-Path $cacheFolder "fonts" $fontFile.BaseName
+                Expand-PackedFile $fontFile.FullName $fontFolder
+                foreach ($fontItem in (Get-ChildItem -Path $fontFolder -Recurse | Where-Object {($_.Name -like '*.ttf') -or ($_.Name -like '*.OTF')})) {
+                    Install-Font -FontFile $fontItem
+                }     
+            }
+            "CreateInstall" {
+                Start-Process (Join-Path $cacheFolder $file) -ArgumentList "-silent"
+            }
+            Default {}
         }
     }
 }
@@ -163,73 +191,79 @@ Function Add-PathVariable {
 }
 
 function Install-Font {
-	param
-	(
-		[Parameter(Mandatory = $true)][ValidateNotNullOrEmpty()][System.IO.FileInfo]$FontFile
-	)
+    param
+    (
+        [Parameter(Mandatory = $true)][ValidateNotNullOrEmpty()][System.IO.FileInfo]$FontFile
+    )
 	
-	#Get Font Name from the File's Extended Attributes
-	$oShell = new-object -com shell.application
-	$Folder = $oShell.namespace($FontFile.DirectoryName)
-	$Item = $Folder.Items().Item($FontFile.Name)
-	$FontName = $Folder.GetDetailsOf($Item, 21)
-	try {
-		switch ($FontFile.Extension) {
-			".ttf" {$FontName = $FontName + [char]32 + '(TrueType)'}
-			".otf" {$FontName = $FontName + [char]32 + '(OpenType)'}
-		}
-		$Copy = $true
-		Write-Host ('Copying' + [char]32 + $FontFile.Name + '.....') -NoNewline
-		Copy-Item -Path $fontFile.FullName -Destination ("C:\Windows\Fonts\" + $FontFile.Name) -Force
-		#Test if font is copied over
-		If ((Test-Path ("C:\Windows\Fonts\" + $FontFile.Name)) -eq $true) {
-			Write-Host ('Success') -Foreground Yellow
-		} else {
-			Write-Host ('Failed') -ForegroundColor Red
-		}
-		$Copy = $false
-		#Test if font registry entry exists
-		If ($null -ne (Get-ItemProperty -Name $FontName -Path "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Fonts" -ErrorAction SilentlyContinue)) {
-			#Test if the entry matches the font file name
-			If ((Get-ItemPropertyValue -Name $FontName -Path "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Fonts") -eq $FontFile.Name) {
-				Write-Host ('Adding' + [char]32 + $FontName + [char]32 + 'to the registry.....') -NoNewline
-				Write-Host ('Success') -ForegroundColor Yellow
-			} else {
-				$AddKey = $true
-				Remove-ItemProperty -Name $FontName -Path "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Fonts" -Force
-				Write-Host ('Adding' + [char]32 + $FontName + [char]32 + 'to the registry.....') -NoNewline
-				New-ItemProperty -Name $FontName -Path "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Fonts" -PropertyType string -Value $FontFile.Name -Force -ErrorAction SilentlyContinue | Out-Null
-				If ((Get-ItemPropertyValue -Name $FontName -Path "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Fonts") -eq $FontFile.Name) {
-					Write-Host ('Success') -ForegroundColor Yellow
-				} else {
-					Write-Host ('Failed') -ForegroundColor Red
-				}
-				$AddKey = $false
-			}
-		} else {
-			$AddKey = $true
-			Write-Host ('Adding' + [char]32 + $FontName + [char]32 + 'to the registry.....') -NoNewline
-			New-ItemProperty -Name $FontName -Path "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Fonts" -PropertyType string -Value $FontFile.Name -Force -ErrorAction SilentlyContinue | Out-Null
-			If ((Get-ItemPropertyValue -Name $FontName -Path "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Fonts") -eq $FontFile.Name) {
-				Write-Host ('Success') -ForegroundColor Yellow
-			} else {
-				Write-Host ('Failed') -ForegroundColor Red
-			}
-			$AddKey = $false
-		}
+    #Get Font Name from the File's Extended Attributes
+    $oShell = new-object -com shell.application
+    $Folder = $oShell.namespace($FontFile.DirectoryName)
+    $Item = $Folder.Items().Item($FontFile.Name)
+    $FontName = $Folder.GetDetailsOf($Item, 21)
+    try {
+        switch ($FontFile.Extension) {
+            ".ttf" { $FontName = $FontName + [char]32 + '(TrueType)' }
+            ".otf" { $FontName = $FontName + [char]32 + '(OpenType)' }
+        }
+        $Copy = $true
+        Write-Host ('Copying' + [char]32 + $FontFile.Name + '.....') -NoNewline
+        Copy-Item -Path $fontFile.FullName -Destination ("C:\Windows\Fonts\" + $FontFile.Name) -Force
+        #Test if font is copied over
+        If ((Test-Path ("C:\Windows\Fonts\" + $FontFile.Name)) -eq $true) {
+            Write-Host ('Success') -Foreground Yellow
+        }
+        else {
+            Write-Host ('Failed') -ForegroundColor Red
+        }
+        $Copy = $false
+        #Test if font registry entry exists
+        If ($null -ne (Get-ItemProperty -Name $FontName -Path "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Fonts" -ErrorAction SilentlyContinue)) {
+            #Test if the entry matches the font file name
+            If ((Get-ItemPropertyValue -Name $FontName -Path "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Fonts") -eq $FontFile.Name) {
+                Write-Host ('Adding' + [char]32 + $FontName + [char]32 + 'to the registry.....') -NoNewline
+                Write-Host ('Success') -ForegroundColor Yellow
+            }
+            else {
+                $AddKey = $true
+                Remove-ItemProperty -Name $FontName -Path "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Fonts" -Force
+                Write-Host ('Adding' + [char]32 + $FontName + [char]32 + 'to the registry.....') -NoNewline
+                New-ItemProperty -Name $FontName -Path "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Fonts" -PropertyType string -Value $FontFile.Name -Force -ErrorAction SilentlyContinue | Out-Null
+                If ((Get-ItemPropertyValue -Name $FontName -Path "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Fonts") -eq $FontFile.Name) {
+                    Write-Host ('Success') -ForegroundColor Yellow
+                }
+                else {
+                    Write-Host ('Failed') -ForegroundColor Red
+                }
+                $AddKey = $false
+            }
+        }
+        else {
+            $AddKey = $true
+            Write-Host ('Adding' + [char]32 + $FontName + [char]32 + 'to the registry.....') -NoNewline
+            New-ItemProperty -Name $FontName -Path "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Fonts" -PropertyType string -Value $FontFile.Name -Force -ErrorAction SilentlyContinue | Out-Null
+            If ((Get-ItemPropertyValue -Name $FontName -Path "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Fonts") -eq $FontFile.Name) {
+                Write-Host ('Success') -ForegroundColor Yellow
+            }
+            else {
+                Write-Host ('Failed') -ForegroundColor Red
+            }
+            $AddKey = $false
+        }
 		
-	} catch {
-		If ($Copy -eq $true) {
-			Write-Host ('Failed') -ForegroundColor Red
-			$Copy = $false
-		}
-		If ($AddKey -eq $true) {
-			Write-Host ('Failed') -ForegroundColor Red
-			$AddKey = $false
-		}
-		write-warning $_.exception.message
-	}
-	Write-Host
+    }
+    catch {
+        If ($Copy -eq $true) {
+            Write-Host ('Failed') -ForegroundColor Red
+            $Copy = $false
+        }
+        If ($AddKey -eq $true) {
+            Write-Host ('Failed') -ForegroundColor Red
+            $AddKey = $false
+        }
+        write-warning $_.exception.message
+    }
+    Write-Host
 }
 
 Function Add-Shortcut {

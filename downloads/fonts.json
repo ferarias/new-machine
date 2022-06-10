@@ -2,11 +2,13 @@
     "items": [
         {
             "file": "Meslo.zip",
-            "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Meslo.zip"
+            "url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Meslo.zip", 
+            "type": "font"
         },
         {
             "file": "Fira_Code_v6.2.zip",
-            "url": "https://github.com/tonsky/FiraCode/releases/download/6.2/Fira_Code_v6.2.zip"
+            "url": "https://github.com/tonsky/FiraCode/releases/download/6.2/Fira_Code_v6.2.zip", 
+            "type": "font"
         }
     ]
 }

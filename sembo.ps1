@@ -48,6 +48,7 @@ try {
 
     # Install apps
     winget install --id '9WZDNCRDK3WP' # Slack
+    winget install --id '9PBGKG2D4TB5' # KeePass
     Start-Process -FilePath "$cacheFolder/openconnect-gui-1.5.3-win32.exe" -ArgumentList "/S" # Uses Nullsoft installer
 
     Write-Host -ForegroundColor DarkYellow "FINISHED SEMBO SETUP!"

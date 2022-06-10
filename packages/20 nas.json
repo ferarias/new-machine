@@ -1,0 +1,7 @@
+{
+    "Title": "NAS",
+    "Packages": [
+        { "id": "Synology.DriveClient", "name": "Synology Drive Client", "interactive": true, "scope": "Machine" },
+        { "id": "Synology.NoteStationClient", "name": "Synology Note Station Client", "interactive": true, "scope": "Machine" }
+    ]
+}

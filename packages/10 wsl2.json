@@ -1,0 +1,8 @@
+{
+    "Title": "WSL2",
+    "Packages": [
+        { "id": "9P9TQF7MRM4R", "name": "Windows Subsystem for Linux Preview" },
+        { "id": "9NBLGGH4MSV6", "name": "Ubuntu" },
+        { "id": "Docker.DockerDesktop", "name": "Docker Desktop", "interactive": true, "scope": "Machine" }
+    ]
+}

@@ -1,0 +1,8 @@
+{
+    "Title": "Multimedia",
+    "Packages": [
+        { "id": "XPDM1ZW6815MQM", "name": "VideoLAN" },
+        { "id": "9P4CLT2RJ1RS", "name": "MusicBee" },
+        { "id": "MusicBrainz.Picard", "name": "MusicBrainz Picard" }
+    ]
+}
