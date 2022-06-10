@@ -33,10 +33,10 @@ try {
     # WINDOWS FEATURES
     # #############################################################################
     # List features: Get-WindowsOptionalFeature -Online
-    # Enable-WindowsOptionalFeature -Online -FeatureName 'Containers' -All
-    # Enable-WindowsOptionalFeature -Online -FeatureName 'Microsoft-Hyper-V' -All
-    # Enable-WindowsOptionalFeature -Online -FeatureName 'VirtualMachinePlatform' -All
-    # Enable-WindowsOptionalFeature -Online -FeatureName 'Microsoft-Windows-Subsystem-Linux' -All
+    Enable-WindowsOptionalFeature -Online -FeatureName 'Containers' -All
+    Enable-WindowsOptionalFeature -Online -FeatureName 'Microsoft-Hyper-V' -All
+    Enable-WindowsOptionalFeature -Online -FeatureName 'VirtualMachinePlatform' -All
+    Enable-WindowsOptionalFeature -Online -FeatureName 'Microsoft-Windows-Subsystem-Linux' -All
 
     # #############################################################################
     # INSTALL SOFTWARE
@@ -44,11 +44,11 @@ try {
     Write-Host -ForegroundColor DarkYellow "INSTALLING SOFTWARE"
 
     # # Winget packages
-    # $packagesFolder = Join-Path $PSScriptRoot "packages"
-    # Write-Host "INFO: Packages directory is: $packagesFolder."
-    # foreach ($item in Get-ChildItem -Path $packagesFolder -Filter "*.json" ) {
-    #     Install-WinGetPackages -JsonFile $item
-    # }
+    $packagesFolder = Join-Path $PSScriptRoot "packages"
+    Write-Host "INFO: Packages directory is: $packagesFolder."
+    foreach ($item in Get-ChildItem -Path $packagesFolder -Filter "*.json" ) {
+        Install-WinGetPackages -JsonFile $item
+    }
 
     # Additional software
     # Look into the "downloads" folder to see which downloads are configured
