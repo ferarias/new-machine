@@ -8,7 +8,7 @@
         { "id": "9MXFBKFVSQ13", "name": "IL Spy" },
         { "id": "9WZDNCRDMDM3", "name": "NuGet Package Explorer" },
         { "id": "Datalust.Seq", "name": "Seq", "interactive": true, "scope": "Machine" },
-        { "id": "Microsoft.dotnet", "name": "Microsoft .Net" },
+        { "id": "Microsoft.dotnet", "name": "Microsoft .Net (Latest version)" },
         { "id": "Microsoft.VisualStudio.2022.Professional", "name": "Microsoft Visual Studio 2022 Professional", "interactive": true }
     ]
 }

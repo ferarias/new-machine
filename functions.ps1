@@ -126,6 +126,9 @@ Function Get-RemoteFiles {
             "CreateInstall" {
                 Start-Process (Join-Path $cacheFolder $file) -ArgumentList "-silent"
             }
+            "NullSoft" {
+                Start-Process (Join-Path $cacheFolder $file) -ArgumentList "/S"
+            }
             Default {}
         }
     }

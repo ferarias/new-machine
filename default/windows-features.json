@@ -1,0 +1,8 @@
+{
+    "features": [
+        "Containers",
+        "Microsoft-Hyper-V",
+        "VirtualMachinePlatform",
+        "Microsoft-Windows-Subsystem-Linux"
+    ]
+}
