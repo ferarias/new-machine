@@ -5,5 +5,6 @@
         { "id": "9NBLGGH4MSV6", "name": "Ubuntu" },
         { "id": "RedHat.Podman", "name": "Podman", "interactive": true },
         { "id": "RedHat.Podman-Desktop", "name": "Podman Desktop", "interactive": true }
+        { "id": "Helm.Helm", "name": "Helm - The package manager for Kubernetes"}
     ]
 }
