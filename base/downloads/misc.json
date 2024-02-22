@@ -42,8 +42,8 @@
         },
         {
             "repo": "derailed/k9s",
-            "file": "k9s_Windows_x86_64.tar.gz",
-            "type": "exe",
+            "file": "k9s_Windows_amd64.zip",
+            "type": "zip",
             "executable": "k9.exe"
         }
     ]

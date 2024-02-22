@@ -1,0 +1,7 @@
+{
+    "Title": "Development",
+    "Packages": [
+        { "id": "Microsoft.VisualStudio.2022.Professional", "name": "Microsoft Visual Studio 2022 Professional", "interactive": true },
+        { "id": "LINQPad.LINQPad.7", "name": "LINQPad 7"}
+    ]
+}

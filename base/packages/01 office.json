@@ -1,0 +1,7 @@
+{
+    "Title": "Office",
+    "Packages": [
+        { "id": "calibre.calibre", "name": "Calibre", "interactive": true },
+        { "id": "Learnpulse.Screenpresso", "name": "Screenpresso", "interactive": true, "scope": "Machine" }
+    ]
+}

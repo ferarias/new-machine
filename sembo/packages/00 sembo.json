@@ -5,6 +5,7 @@
         { "id": "Microsoft.dotnet", "version": "3.1.410.15736", "name": "dotnet 3.1 SDK" },
         { "id": "Microsoft.dotnet", "version": "5.4.121.42430", "name": "dotnet 5.4 SDK" },
         { "id": "9WZDNCRDK3WP", "name": "Slack" },
-        { "id": "9PBGKG2D4TB5", "name": "KeePass" }
+        { "id": "9PBGKG2D4TB5", "name": "KeePass" },
+        { "id": "Fortinet.FortiClientVPN", "name": "FortiClient VPN" }
     ]
 }

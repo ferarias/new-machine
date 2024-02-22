@@ -39,7 +39,7 @@ Function Install-WinGetPackages {
 
     $title = $data.Title
 
-    Write-Host -ForegroundColor Green " Installing $title..."
+    Write-Host -ForegroundColor Green "INSTALLING $title"
 
     $data | Select-Object -ExpandProperty Packages | ForEach-Object {
 
@@ -119,9 +119,14 @@ Function Get-RemoteFiles {
                 $fontFile = Get-Item -Path (Join-Path $cacheFolder $file)
                 $fontFolder = Join-Path $cacheFolder "fonts" $fontFile.BaseName
                 Expand-PackedFile $fontFile.FullName $fontFolder
-                foreach ($fontItem in (Get-ChildItem -Path $fontFolder -Recurse | Where-Object {($_.Name -like '*.ttf') -or ($_.Name -like '*.OTF')})) {
-                    Install-Font -FontFile $fontItem
-                }     
+
+                if (([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+                    foreach ($fontItem in (Get-ChildItem -Path $fontFolder -Recurse | Where-Object {($_.Name -like '*.ttf') -or ($_.Name -like '*.OTF')})) {
+                        Install-Font -FontFile $fontItem
+                    }     
+                } else {
+                    Write-Warning "You need administrative permissions to install fonts"
+                }
             }
             "CreateInstall" {
                 Start-Process (Join-Path $cacheFolder $file) -ArgumentList "-silent"
@@ -170,12 +175,11 @@ Function Expand-PackedFile {
 
 Function Extract([string]$Path, [string]$Destination) {
     $sevenZipApplication = "$cacheFolder\7z\7z.exe"
-    $sevenZipArguments = @(
-        'x'                     ## eXtract files with full paths
-        '-y'                    ## assume Yes on all queries
-        "`"-o$($Destination)`"" ## set Output directory
-        "`"$($Path)`""          ## <archive_name>
-    )
+    $sevenZipArguments = New-Object String[] 4
+    $sevenZipArguments[0] = 'x'
+    $sevenZipArguments[1] = '-y'
+    $sevenZipArguments[2] = '-o' + $Destination
+    $sevenZipArguments[3] = $Path
     & $sevenZipApplication $sevenZipArguments | Out-Null
 }
 

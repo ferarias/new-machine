@@ -1,8 +1,6 @@
 {
     "Title": "Multimedia",
     "Packages": [
-        { "id": "XPDM1ZW6815MQM", "name": "VideoLAN" },
-        { "id": "AIMP.AIMP", "name": "AIMP Music Player" },
         { "id": "MusicBrainz.Picard", "name": "MusicBrainz Picard" }
     ]
 }
