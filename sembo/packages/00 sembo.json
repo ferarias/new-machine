@@ -2,10 +2,14 @@
     "Title": "",
     "Packages": [
         { "id": "OpenJS.NodeJS.LTS", "version": "14.17.4", "name": "NodeJS 14.17.4 LTS" },
-        { "id": "Microsoft.dotnet", "version": "3.1.410.15736", "name": "dotnet 3.1 SDK" },
-        { "id": "Microsoft.dotnet", "version": "5.4.121.42430", "name": "dotnet 5.4 SDK" },
+        { "id": "Microsoft.DotNet.SDK.3_1", "name":"dotnet 3.1 SDK" },
+        { "id": "Microsoft.DotNet.SDK.5", "name":"dotnet 5 SDK" },
+        { "id": "Microsoft.DotNet.SDK.6", "name":"dotnet 6 SDK" },
+        { "id": "Microsoft.DotNet.SDK.7", "name":"dotnet 7 SDK" },
+        { "id": "Microsoft.DotNet.SDK.8", "name":"dotnet 8 SDK" },
+        { "id": "Microsoft.DotNet.Framework.DeveloperPack.4.5", "name": "Latest .Net Framework 4.5 SDK" },
+        { "id": "Microsoft.DotNet.Framework.DeveloperPack_4", "name": "Latest .Net Framework 4 SDK" },
         { "id": "9WZDNCRDK3WP", "name": "Slack" },
-        { "id": "9PBGKG2D4TB5", "name": "KeePass" },
         { "id": "Fortinet.FortiClientVPN", "name": "FortiClient VPN" }
     ]
 }

@@ -1,9 +1,5 @@
 {
     "items": [
-        {
-            "repo": "openconnect/openconnect-gui",
-            "file": "openconnect-gui-1.5.3-win32.exe",
-            "type": "Nullsoft"
-        }
+        
     ]
 }

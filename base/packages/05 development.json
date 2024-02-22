@@ -7,7 +7,6 @@
         { "id": "Telerik.Fiddler.Classic", "name": "Telerik Fiddler" },
         { "id": "9MXFBKFVSQ13", "name": "IL Spy" },
         { "id": "9WZDNCRDMDM3", "name": "NuGet Package Explorer" },
-        { "id": "Datalust.Seq", "name": "Seq", "interactive": true, "scope": "Machine" },
-        { "id": "Microsoft.dotnet", "name": "Microsoft .Net (Latest version)" }
+        { "id": "Datalust.Seq", "name": "Seq", "interactive": true, "scope": "Machine" }
     ]
 }

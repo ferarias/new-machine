@@ -1,5 +1,5 @@
 {
-    "Title": "Office",
+    "Title": "Utilities",
     "Packages": [
         { "id": "Bitwarden.Bitwarden", "interactive": true },
         { "id": "DupeGuru.DupeGuru", "name": "Brave Browser" }

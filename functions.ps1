@@ -39,10 +39,16 @@ Function Install-WinGetPackages {
 
     $title = $data.Title
 
-    Write-Host -ForegroundColor Green "INSTALLING $title"
+    Write-Host -ForegroundColor Green "=== INSTALLING $title SOFTWARE ==="
 
     $data | Select-Object -ExpandProperty Packages | ForEach-Object {
 
+        if([System.String]::IsNullOrWhiteSpace($_.name))
+        {
+            Write-Host -ForegroundColor Cyan ">> Installing $($_.id)"
+        } else {
+            Write-Host -ForegroundColor Cyan ">> Installing $($_.name)"
+        }
         $command = "winget list --id $($_.id)"
         Invoke-Expression $command
         if (0 -ne $LASTEXITCODE) {
@@ -57,6 +63,8 @@ Function Install-WinGetPackages {
         }
 
     }
+
+    Write-Host "==="
 }
 
 Function Get-RemoteFiles {
