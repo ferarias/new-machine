@@ -5,7 +5,7 @@
         { "id": "GitHub.GitLFS", "name": "GitHub LFS", "scope": "Machine" },
         { "id": "GitHub.cli", "name": "Github CLI", "scope": "Machine" },
         { "id": "Telerik.Fiddler.Classic", "name": "Telerik Fiddler" },
-        { "id": "9MXFBKFVSQ13", "name": "IL Spy" },
+        { "id": "icsharpcode.ILSpy", "name": "IL Spy" },
         { "id": "9WZDNCRDMDM3", "name": "NuGet Package Explorer" },
         { "id": "Datalust.Seq", "name": "Seq", "interactive": true, "scope": "Machine" }
     ]

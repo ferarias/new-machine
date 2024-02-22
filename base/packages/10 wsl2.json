@@ -4,7 +4,7 @@
         { "id": "9P9TQF7MRM4R", "name": "Windows Subsystem for Linux Preview" },
         { "id": "9NBLGGH4MSV6", "name": "Ubuntu" },
         { "id": "RedHat.Podman", "name": "Podman", "interactive": true },
-        { "id": "RedHat.Podman-Desktop", "name": "Podman Desktop", "interactive": true }
+        { "id": "RedHat.Podman-Desktop", "name": "Podman Desktop", "interactive": true },
         { "id": "Helm.Helm", "name": "Helm - The package manager for Kubernetes"}
     ]
 }
