@@ -1,7 +1,6 @@
 {
     "Title": "Communication",
     "Packages": [
-        { "id": "XP99J3KP4XZ4VV", "name": "Zoom" },
         { "id": "9N97ZCKPD60Q", "name": "Unigram" },
         { "id": "PuTTY.PuTTY", "name": "PuTTY", "interactive": true, "scope": "Machine" },
         { "id": "WinSCP.WinSCP", "name": "WinSCP", "scope": "Machine" }
